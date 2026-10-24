@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Usage: keep-awake.sh run -- COMMAND [ARGS...]
-#        keep-awake.sh start [--hours N] [--pid PID] | stop [--pid PID] | status [--pid PID]
+#        keep-awake.sh start [--hours N] [--pid PID] [--lid] | stop [--pid PID] | status [--pid PID]
 #
 # `run` holds a sleep-prevention assertion exactly as long as COMMAND runs and
 # exits with its status. `start` holds one in the background, scoped to one
 # agent session, until whichever comes first: `stop`, the watched process
-# exiting, or the --hours cap.
+# exiting, or the --hours cap. On macOS, `--lid` also disables lid-close sleep
+# for the same span and re-enables it on release.
 
 set -euo pipefail
 
@@ -42,16 +43,50 @@ is_running() {
   kill -0 "$1" 2>/dev/null
 }
 
+# caffeinate cannot block lid-close sleep; only `pmset disablesleep` can. It
+# needs root, so --lid runs it through `sudo -n` and relies on a sudoers rule
+# for exactly these two commands (see lid_setup_hint).
+lid_sleep_disabled() {
+  [ "$(pmset -g 2>/dev/null | awk '/SleepDisabled/ {print $2}')" = "1" ]
+}
+
+restore_lid_command="sudo -n /usr/bin/pmset -a disablesleep 0"
+
+lid_setup_hint() {
+  cat >&2 <<EOF
+--lid needs passwordless sudo for pmset disablesleep. One-time setup:
+  echo "$(id -un) ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 1, /usr/bin/pmset -a disablesleep 0" | sudo tee /etc/sudoers.d/keep-awake && sudo chmod 440 /etc/sudoers.d/keep-awake && sudo visudo -cf /etc/sudoers.d/keep-awake
+EOF
+}
+
+print_lid_note() {
+  if [ "$(uname -s)" != "Darwin" ]; then
+    return
+  fi
+  if [ -f "$lid_file" ]; then
+    echo "lid sleep disabled until release; it is re-enabled on stop, agent exit or the cap"
+  elif lid_sleep_disabled; then
+    echo "lid sleep is disabled outside keep-awake; undo when done: sudo pmset -a disablesleep 0"
+  else
+    echo "closing the lid still sleeps this Mac; start with --lid to keep running lid-closed"
+  fi
+}
+
 action="${1:-}"
 shift || true
 
 max_hours=$default_max_hours
 watched_pid=""
+hold_lid=false
 while [ $# -gt 0 ]; do
   case "$1" in
     --hours)
       max_hours="$2"
       shift 2
+      ;;
+    --lid)
+      hold_lid=true
+      shift
       ;;
     --pid)
       watched_pid="$2"
@@ -100,6 +135,17 @@ if [ -z "$watched_pid" ]; then
   watched_pid="$(find_agent_pid)"
 fi
 pid_file="$state_dir/$watched_pid.pid"
+lid_file="$state_dir/$watched_pid.lid"
+
+# Only re-enables lid sleep that this session disabled, so a setting the user
+# made by hand is left alone.
+restore_lid_sleep() {
+  if [ -f "$lid_file" ]; then
+    $restore_lid_command >/dev/null 2>&1 || echo "could not re-enable lid sleep; run: sudo pmset -a disablesleep 0" >&2
+    rm -f "$lid_file"
+    echo "lid sleep re-enabled"
+  fi
+}
 
 read_holder_pid() {
   if [ -f "$pid_file" ]; then
@@ -118,6 +164,9 @@ start() {
   holder_pid="$(read_holder_pid)"
   if [ -n "$holder_pid" ]; then
     echo "already awake (holder $holder_pid, watching $watched_pid)"
+    if [ "$hold_lid" = true ] && [ ! -f "$lid_file" ]; then
+      echo "--lid is not active on this hold; run stop, then start --lid" >&2
+    fi
     return
   fi
 
@@ -130,7 +179,22 @@ start() {
       if [ "$max_seconds" -gt 0 ]; then
         caffeinate_args+=(-t "$max_seconds")
       fi
-      nohup caffeinate "${caffeinate_args[@]}" >/dev/null 2>&1 &
+      if [ "$hold_lid" = true ] && ! lid_sleep_disabled; then
+        if sudo -n /usr/bin/pmset -a disablesleep 1 >/dev/null 2>&1; then
+          touch "$lid_file"
+        else
+          echo "could not disable lid sleep; holding without --lid" >&2
+          lid_setup_hint
+        fi
+      fi
+      if [ -f "$lid_file" ]; then
+        # The wrapper outlives caffeinate so lid sleep comes back on every
+        # release path: stop, the agent exiting, or the cap.
+        nohup bash -c 'caffeinate "${@:2}"; '"$restore_lid_command"' >/dev/null 2>&1; rm -f "$1"' \
+          keep-awake-holder "$lid_file" "${caffeinate_args[@]}" >/dev/null 2>&1 &
+      else
+        nohup caffeinate "${caffeinate_args[@]}" >/dev/null 2>&1 &
+      fi
       ;;
     Linux)
       if ! command -v systemd-inhibit >/dev/null 2>&1; then
@@ -160,6 +224,7 @@ start() {
     cap_description="cap ${max_hours}h"
   fi
   echo "awake (holder $holder_pid, watching $watched_pid, $cap_description)"
+  print_lid_note
 }
 
 stop() {
@@ -167,11 +232,16 @@ stop() {
   holder_pid="$(read_holder_pid)"
   if [ -z "$holder_pid" ]; then
     echo "not running"
-    return
+  else
+    pkill -P "$holder_pid" 2>/dev/null || true
+    kill "$holder_pid" 2>/dev/null || true
+    rm -f "$pid_file"
+    echo "released (holder $holder_pid)"
   fi
-  kill "$holder_pid"
-  rm -f "$pid_file"
-  echo "released (holder $holder_pid)"
+  restore_lid_sleep
+  if [ "$(uname -s)" = "Darwin" ] && lid_sleep_disabled; then
+    print_lid_note
+  fi
 }
 
 status() {
@@ -189,7 +259,7 @@ case "$action" in
   stop) stop ;;
   status) status ;;
   *)
-    echo "usage: keep-awake.sh run -- COMMAND | start [--hours N] [--pid PID] | stop | status" >&2
+    echo "usage: keep-awake.sh run -- COMMAND | start [--hours N] [--pid PID] [--lid] | stop | status" >&2
     exit 2
     ;;
 esac
