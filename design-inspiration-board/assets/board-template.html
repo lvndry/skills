@@ -1,0 +1,176 @@
+<title>Product Directions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+<style>
+/* Board shell. Copy one .direction block per direction. Each sketch is drawn on a fixed 1200x720 .canvas scaled to its .frame. */
+:root { --board: #EFEEEA; --card: #FAFAF8; --ink: #131313; --soft: #5A5D63; --faint: #8C8F95; --line: #DEDDD8; --font-ui: "Inter Tight", "Helvetica Neue", Arial, sans-serif; color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--board); color: var(--ink); font-family: var(--font-ui); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 1280px; margin-inline: auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.intro { padding-block: 72px 40px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px 64px; align-items: end; }
+.intro h1 { margin: 0; font-size: clamp(40px, 5.4vw, 72px); line-height: .96; letter-spacing: -.04em; font-weight: 600; text-wrap: balance; }
+.intro p { margin: 0; color: var(--soft); font-size: 17px; max-width: 52ch; }
+.jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.jump a { text-decoration: none; font-size: 14px; font-weight: 500; padding: 7px 12px; border-radius: 999px; background: var(--card); }
+.direction { padding-block: 44px; }
+.direction + .direction { border-top: 1px solid var(--line); }
+.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 24px 56px; margin-bottom: 28px; }
+.letter { font-size: 15px; font-weight: 600; color: var(--faint); }
+.head h2 { margin: 6px 0 10px; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -.035em; line-height: 1; font-weight: 600; }
+.head .pitch { color: var(--soft); font-size: 17px; max-width: 46ch; margin: 0; }
+.specs { display: grid; gap: 10px; align-content: start; font-size: 14.5px; }
+.spec { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; }
+.spec b { font-weight: 600; color: var(--faint); font-size: 13.5px; }
+.swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+.swatches i { width: 22px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+.refs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+.ref { display: grid; gap: 8px; text-decoration: none; }
+.ref img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: top; border-radius: 10px; background: #ddd; display: block; transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.ref:hover img { transform: translateY(-3px); }
+.ref span { font-size: 13.5px; color: var(--soft); }
+.ref span b { color: var(--ink); font-weight: 600; }
+.also { font-size: 14px; color: var(--soft); margin: -6px 0 20px; }
+.frame { position: relative; width: 100%; aspect-ratio: 1200 / 720; border-radius: 16px; overflow: hidden; background: #ddd; box-shadow: 0 30px 70px -40px rgba(0,0,0,.45); }
+.canvas { position: absolute; left: 0; top: 0; width: 1200px; height: 720px; transform-origin: 0 0; transform: scale(var(--scale, 1)); overflow: hidden; }
+.replay { position: absolute; right: 12px; bottom: 12px; z-index: 20; border: 0; border-radius: 999px; padding: 7px 12px; font: 600 12.5px var(--font-ui); background: rgba(255,255,255,.85); color: #111; cursor: pointer; }
+.mark-path { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.canvas .in { transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+.canvas.pre .in { opacity: 0; transform: translateY(18px); }
+.canvas.pre .in.zoom { transform: translateY(40px) scale(.97); }
+.canvas .d1 { transition-delay: .08s; } .canvas .d2 { transition-delay: .16s; } .canvas .d3 { transition-delay: .26s; } .canvas .d4 { transition-delay: .4s; }
+@media (max-width: 860px) { .intro, .head { grid-template-columns: minmax(0, 1fr); } .frame { border-radius: 10px; } }
+@media (prefers-reduced-motion: reduce) { .canvas .in { transition: none; } }
+
+/* Example sketch. Replace per direction. */
+.example { background: #F6F5F1; color: #161616; font-family: "Instrument Sans", sans-serif; }
+.example h3 { position: absolute; left: 48px; top: 150px; width: 640px; margin: 0; font-size: 92px; line-height: .92; letter-spacing: -.045em; font-weight: 600; font-stretch: 85%; }
+.example .sub { position: absolute; left: 48px; top: 370px; width: 470px; margin: 0; font-size: 20px; color: #55565a; }
+.example .big { position: absolute; right: 70px; top: 120px; width: 420px; height: 420px; }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <div>
+      <h1>Directions for the PRODUCT website</h1>
+      <div class="jump"><a href="#a">A · Name</a></div>
+    </div>
+    <p>Each direction comes from real sites. Every sketch below is live and opens with the brand's signature animation. Press Replay to watch it again. Pick one, or mix parts.</p>
+  </header>
+
+  <section class="direction" id="a">
+    <div class="head">
+      <div>
+        <div class="letter">A</div>
+        <h2>Name</h2>
+        <p class="pitch">Two or three plain sentences: what the visitor sees and feels.</p>
+      </div>
+      <div class="specs">
+        <div class="spec"><b>Inspired by</b><span>Real site (score), real site, real site</span></div>
+        <div class="spec"><b>Type</b><span>Google Fonts family and weight</span></div>
+        <div class="spec"><b>Palette</b><span class="swatches"><i style="background:#F6F5F1"></i><i style="background:#161616"></i></span></div>
+        <div class="spec"><b>Motion</b><span>The signature move in one line</span></div>
+      </div>
+    </div>
+    <div class="refs">
+      <a class="ref" href="https://example.com"><img src="__EMBED:refs/one.webp__" alt="Describe the reference screenshot."><span><b>Site</b> · what to take</span></a>
+      <a class="ref" href="https://example.com"><img src="__EMBED:refs/two.webp__" alt="Describe the reference screenshot."><span><b>Site</b> · what to take</span></a>
+      <a class="ref" href="https://example.com"><img src="__EMBED:refs/three.webp__" alt="Describe the reference screenshot."><span><b>Site</b> · what to take</span></a>
+    </div>
+    <div class="frame"><div class="canvas example">
+      <h3 class="in d1">Headline in the product's words.</h3>
+      <p class="sub in d2">One supporting sentence with real facts.</p>
+      <svg class="big" viewBox="0 0 64 64"><path class="mark-path" data-curve="3:2" data-intro stroke-width="1.6"></path></svg>
+    </div><button class="replay" type="button">Replay</button></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  /* Curve engine: a Lissajous mark x = sin(a t), y = cos(b t), drawn tip to tip, held, erased.
+     Replace with the product's own signature animation, copied from its source with exact timings. */
+  const DRAW = 1.6, HOLD = 0.5, ERASE = 1.2, LOOP = DRAW + HOLD + ERASE, PULSE = 2.4, DEPTH = 0.55;
+  const reduces = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ease = (progress) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(Math.max(progress, 0), 1));
+  const point = (larger, smaller, turn) => [32 + 24 * Math.sin(larger * 2 * Math.PI * turn), 32 + 24 * Math.cos(smaller * 2 * Math.PI * turn)];
+  const spanCache = {};
+  function spanFor(larger, smaller) {
+    const key = larger + ":" + smaller;
+    if (spanCache[key]) return spanCache[key];
+    let retraces = true;
+    for (let step = 0; step <= 200 && retraces; step++) {
+      const turn = 0.25 + 0.5 * step / 200;
+      const [ax, ay] = point(larger, smaller, turn);
+      const [bx, by] = point(larger, smaller, 1.5 - turn);
+      if (Math.abs(ax - bx) > 1e-3 || Math.abs(ay - by) > 1e-3) retraces = false;
+    }
+    return (spanCache[key] = retraces ? [0.25, 0.75] : [0.25, 1.25]);
+  }
+  function curvePath(larger, smaller, from, to) {
+    if (to - from <= 0) return "";
+    const [start, end] = spanFor(larger, smaller);
+    const density = Math.max(300, (larger + smaller) * 70) * (end - start) / 0.5;
+    const count = Math.max(2, Math.ceil((to - from) / (end - start) * density));
+    let path = "";
+    for (let index = 0; index < count; index++) {
+      const [across, down] = point(larger, smaller, from + (to - from) * index / (count - 1));
+      path += (index ? "L" : "M") + across.toFixed(2) + " " + down.toFixed(2);
+    }
+    return path;
+  }
+  function span(seconds, start, end, loops) {
+    const length = end - start;
+    const local = loops ? ((seconds % LOOP) + LOOP) % LOOP : Math.min(seconds, DRAW + HOLD);
+    if (local < DRAW) return [start, start + length * ease(local / DRAW)];
+    if (local < DRAW + HOLD || !loops) return [start, end];
+    return [start + length * ease((local - DRAW - HOLD) / ERASE), end];
+  }
+
+  const tracked = Array.from(document.querySelectorAll("path[data-curve]"));
+  const started = new Map();
+  const restart = (path) => started.set(path, performance.now());
+  tracked.forEach(restart);
+
+  const canvases = Array.from(document.querySelectorAll(".canvas"));
+  function intro(canvas) {
+    canvas.classList.add("pre");
+    canvas.querySelectorAll("path[data-curve]").forEach(restart);
+    clearTimeout(canvas._timer);
+    canvas._timer = setTimeout(() => canvas.classList.remove("pre"), reduces ? 200 : (DRAW + HOLD) * 1000 - 300);
+  }
+  if ("IntersectionObserver" in window) {
+    const seen = new WeakSet();
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting && !seen.has(entry.target)) { seen.add(entry.target); intro(entry.target); }
+    }), { threshold: 0 });
+    canvases.forEach((canvas) => observer.observe(canvas));
+  }
+  document.querySelectorAll(".replay").forEach((button) => button.addEventListener("click", () => intro(button.previousElementSibling)));
+
+  function frame(now) {
+    tracked.forEach((path) => {
+      const [larger, smaller] = (path.dataset.curve || "3:2").split(":").map(Number);
+      const [start, end] = spanFor(larger, smaller);
+      const seconds = (now - started.get(path)) / 1000 - Number(path.dataset.offset || 0);
+      if (reduces) {
+        path.setAttribute("d", curvePath(larger, smaller, start, end));
+        path.style.strokeOpacity = String(1 - DEPTH * (0.5 - 0.5 * Math.cos(2 * Math.PI * Math.max(seconds, 0) / PULSE)));
+        return;
+      }
+      if (seconds < 0) { path.setAttribute("d", ""); return; }
+      const [from, to] = span(seconds, start, end, path.hasAttribute("data-loop"));
+      path.setAttribute("d", curvePath(larger, smaller, from, to));
+    });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  const fit = () => document.querySelectorAll(".frame").forEach((frameElement) => {
+    frameElement.querySelector(".canvas").style.setProperty("--scale", String(frameElement.clientWidth / 1200));
+  });
+  if ("ResizeObserver" in window) new ResizeObserver(fit).observe(document.body);
+  fit();
+})();
+</script>

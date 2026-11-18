@@ -1,0 +1,568 @@
+<title>Euphoria Website Directions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wdth,wght@75..100,400..700&family=Archivo:wdth,wght@62..125,400..900&family=Chivo:wght@400;600;800&family=Chivo+Mono:wght@400;500&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: a mood board. One column of six directions, each a header, its real references and a live hero sketch at 1200 by 720, scaled to fit. */
+:root {
+  --board: #EFEEEA;
+  --card: #FAFAF8;
+  --ink: #131313;
+  --soft: #5A5D63;
+  --faint: #8C8F95;
+  --line: #DEDDD8;
+  --font-ui: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--board); color: var(--ink); font-family: var(--font-ui); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 1280px; margin-inline: auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.intro { padding-block: 72px 40px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px 64px; align-items: end; }
+.intro h1 { margin: 0; font-size: clamp(40px, 5.4vw, 72px); line-height: 0.96; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance; }
+.intro p { margin: 0; color: var(--soft); font-size: 17px; max-width: 52ch; }
+.jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.jump a { text-decoration: none; font-size: 14px; font-weight: 500; padding: 7px 12px; border-radius: 999px; background: var(--card); transition: background .2s, transform .2s; }
+.jump a:hover { background: #fff; transform: translateY(-1px); }
+
+.direction { padding-block: 44px; }
+.direction + .direction { border-top: 1px solid var(--line); }
+.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 24px 56px; margin-bottom: 28px; }
+.letter { font-size: 15px; font-weight: 600; color: var(--faint); }
+.head h2 { margin: 6px 0 10px; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.035em; line-height: 1; font-weight: 600; }
+.head .pitch { color: var(--soft); font-size: 17px; max-width: 46ch; margin: 0; }
+.specs { display: grid; gap: 10px; align-content: start; font-size: 14.5px; }
+.spec { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; }
+.spec b { font-weight: 600; color: var(--faint); font-size: 13.5px; }
+.swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+.swatches i { width: 22px; height: 22px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+.refs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+.ref { display: grid; gap: 8px; text-decoration: none; }
+.ref img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: top; border-radius: 10px; background: #ddd; display: block; transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.ref:hover img { transform: translateY(-3px); }
+.ref span { font-size: 13.5px; color: var(--soft); }
+.ref span b { color: var(--ink); font-weight: 600; }
+.also { font-size: 14px; color: var(--soft); margin: -6px 0 20px; }
+.frame { position: relative; width: 100%; aspect-ratio: 1200 / 720; border-radius: 16px; overflow: hidden; background: #ddd; box-shadow: 0 30px 70px -40px rgba(0,0,0,.45); }
+.canvas { position: absolute; left: 0; top: 0; width: 1200px; height: 720px; transform-origin: 0 0; transform: scale(var(--scale, 1)); overflow: hidden; }
+.replay { position: absolute; right: 12px; bottom: 12px; z-index: 20; border: 0; border-radius: 999px; padding: 7px 12px; font: 600 12.5px var(--font-ui); background: rgba(255,255,255,.85); color: #111; cursor: pointer; }
+.replay:hover { background: #fff; }
+.mark-path { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.canvas .in { transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+.canvas.pre .in { opacity: 0; transform: translateY(18px); }
+.canvas.pre .in.zoom { transform: translateY(40px) scale(.97); }
+.canvas .d1 { transition-delay: .08s; } .canvas .d2 { transition-delay: .16s; } .canvas .d3 { transition-delay: .26s; } .canvas .d4 { transition-delay: .4s; }
+.pick { padding-block: 56px 96px; }
+.pick p { color: var(--soft); max-width: 62ch; }
+
+/* A. Signal */
+.signal { background: #F6F5F1; color: #161616; font-family: "Instrument Sans", sans-serif; }
+.signal .nav { position: absolute; left: 48px; right: 48px; top: 30px; display: flex; align-items: center; gap: 36px; font-size: 15px; }
+.signal .brand { display: flex; gap: 10px; align-items: center; font-weight: 600; font-size: 17px; }
+.signal .brand svg { width: 24px; height: 24px; }
+.signal .nav .links { display: flex; gap: 28px; color: #6b6b6b; margin-left: auto; }
+.signal .btn { background: #161616; color: #F6F5F1; border-radius: 999px; padding: 11px 20px; font-weight: 600; font-size: 15px; display: inline-block; }
+.signal .btn.ghost { background: transparent; color: #161616; box-shadow: inset 0 0 0 1.5px #161616; }
+.signal h3 { position: absolute; left: 48px; top: 150px; width: 600px; margin: 0; font-size: 92px; line-height: .92; letter-spacing: -0.045em; font-weight: 600; font-stretch: 85%; }
+.signal .sub { position: absolute; left: 48px; top: 360px; width: 470px; font-size: 20px; line-height: 1.45; color: #55565a; margin: 0; }
+.signal .ctas { position: absolute; left: 48px; top: 462px; display: flex; gap: 10px; }
+.signal .big { position: absolute; right: 70px; top: 96px; width: 420px; height: 420px; color: #161616; }
+.signal .row { position: absolute; left: 48px; right: 48px; bottom: 44px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+.signal .cell { display: grid; gap: 6px; justify-items: start; }
+.signal .cell svg { width: 70px; height: 70px; }
+.signal .cell b { font-size: 14px; font-weight: 600; }
+.signal .cell span { font-size: 13px; color: #75767a; }
+
+/* B. Daybreak */
+.daybreak { background: #BFD6EE; color: #13233D; font-family: "Inter", sans-serif; }
+.daybreak .sky { position: absolute; inset: 0; background:
+  radial-gradient(60% 50% at 50% 100%, #FBD9C4 0%, rgba(251,217,196,0) 70%),
+  radial-gradient(90% 70% at 50% 110%, #F7C7B3 0%, rgba(247,199,179,0) 60%),
+  linear-gradient(180deg, #8DB3E2 0%, #B9D1EE 45%, #EAD9D6 78%, #F6D5C2 100%); }
+.daybreak .cloud { position: absolute; border-radius: 50%; background: #fff; filter: blur(18px); opacity: .75; }
+.daybreak .c1 { width: 420px; height: 90px; left: -80px; top: 150px; animation: drift 38s linear infinite alternate; }
+.daybreak .c2 { width: 520px; height: 110px; right: -120px; top: 250px; opacity: .6; animation: drift 46s linear infinite alternate-reverse; }
+.daybreak .c3 { width: 300px; height: 70px; left: 380px; top: 80px; opacity: .5; animation: drift 30s linear infinite alternate; }
+@keyframes drift { to { transform: translateX(140px); } }
+.daybreak .nav { position: absolute; left: 40px; right: 40px; top: 26px; display: flex; align-items: center; justify-content: space-between; font-size: 14.5px; font-weight: 500; }
+.daybreak .nav .pillnav { display: flex; gap: 26px; background: rgba(255,255,255,.55); padding: 10px 22px; border-radius: 999px; }
+.daybreak .brand { display: flex; gap: 9px; align-items: center; font-weight: 600; font-size: 16px; }
+.daybreak .brand svg { width: 22px; height: 22px; }
+.daybreak .logo-hero { position: absolute; left: 50%; top: 92px; width: 64px; height: 64px; margin-left: -32px; color: #13233D; }
+.daybreak h3 { position: absolute; left: 0; right: 0; top: 168px; margin: 0; text-align: center; font-family: "Instrument Serif", serif; font-weight: 400; font-size: 88px; line-height: .95; letter-spacing: -0.02em; }
+.daybreak h3 em { font-style: italic; }
+.daybreak .sub { position: absolute; left: 0; right: 0; top: 352px; text-align: center; font-size: 18px; color: #2E3E58; margin: 0; }
+.daybreak .cta { position: absolute; left: 50%; top: 404px; transform: translateX(-50%); display: flex; gap: 10px; }
+.daybreak .btn { background: #13233D; color: #fff; border-radius: 999px; padding: 12px 22px; font-weight: 600; font-size: 15px; display: inline-flex; gap: 8px; align-items: center; }
+.daybreak .btn.light { background: rgba(255,255,255,.7); color: #13233D; }
+.daybreak .window { position: absolute; left: 150px; width: 900px; top: 486px; border-radius: 14px; overflow: hidden; box-shadow: 0 40px 80px -30px rgba(40,50,90,.55), 0 0 0 1px rgba(255,255,255,.4); }
+.daybreak .window img { display: block; width: 100%; }
+
+/* C. Afterhours */
+.after { background: #07080A; color: #ECEDEF; font-family: "Inter Tight", sans-serif; }
+.after .beam { position: absolute; left: 50%; top: -260px; width: 1100px; height: 900px; transform: translateX(-50%); background: radial-gradient(40% 50% at 50% 30%, rgba(98,150,255,.36), rgba(98,150,255,0) 70%); }
+.after .nav { position: absolute; left: 48px; right: 48px; top: 28px; display: flex; align-items: center; gap: 30px; font-size: 14.5px; color: #9EA2AA; }
+.after .brand { display: flex; gap: 10px; align-items: center; font-weight: 600; font-size: 17px; color: #fff; }
+.after .brand svg { width: 22px; height: 22px; filter: drop-shadow(0 0 6px rgba(120,170,255,.8)); }
+.after .nav .right { margin-left: auto; display: flex; gap: 10px; }
+.after .chipbtn { border-radius: 9px; padding: 9px 14px; font-weight: 600; color: #fff; background: #1A1C21; font-size: 14px; }
+.after .chipbtn.on { background: #ECEDEF; color: #07080A; }
+.after .status { position: absolute; left: 48px; top: 120px; display: flex; gap: 10px; align-items: center; font-size: 14px; color: #B9C7E6; background: rgba(91,155,255,.1); padding: 7px 12px 7px 9px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(91,155,255,.25); }
+.after .status svg { width: 20px; height: 20px; color: #8DB6FF; }
+.after h3 { position: absolute; left: 48px; top: 166px; margin: 0; font-size: 74px; line-height: .98; letter-spacing: -0.045em; font-weight: 600; width: 900px; }
+.after h3 span { color: #6C7079; }
+.after .sub { position: absolute; left: 48px; top: 338px; width: 520px; margin: 0; font-size: 18.5px; color: #9EA2AA; }
+.after .cta { position: absolute; right: 48px; top: 350px; display: flex; gap: 10px; }
+.after .shot { position: absolute; left: 70px; right: 70px; top: 448px; height: 520px; perspective: 1400px; }
+.after .shot .tilt { transform: rotateX(24deg); transform-origin: top center; border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 -10px 80px -20px rgba(91,155,255,.5); position: relative; }
+.after .shot img { width: 100%; display: block; }
+.after .scan { position: absolute; left: 0; right: 0; height: 120px; top: -120px; background: linear-gradient(180deg, rgba(91,155,255,0), rgba(91,155,255,.22), rgba(91,155,255,0)); animation: scan 4.2s cubic-bezier(.5,0,.5,1) infinite; }
+@keyframes scan { to { transform: translateY(820px); } }
+
+/* D. Swiss liner notes */
+.swiss { background: #FFFFFF; color: #111; font-family: "Archivo", sans-serif; }
+.swiss .nav { position: absolute; left: 40px; right: 40px; top: 26px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; font-size: 14px; font-weight: 500; }
+.swiss .nav span:last-child { text-align: right; }
+.swiss .name { position: absolute; left: 34px; right: 34px; top: 84px; display: flex; align-items: center; justify-content: space-between; font-stretch: 125%; font-weight: 800; font-size: 172px; line-height: .8; letter-spacing: -0.05em; }
+.swiss .name svg { width: 150px; height: 150px; margin: 0 4px; color: #111; flex: none; }
+.swiss .meta { position: absolute; left: 40px; right: 40px; top: 300px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 24px; font-size: 16px; line-height: 1.4; }
+.swiss .meta b { font-weight: 700; }
+.swiss .btn { background: #111; color: #fff; padding: 12px 18px; font-weight: 700; font-size: 15px; justify-self: end; align-self: start; }
+.swiss .chapters { position: absolute; left: 0; right: 0; bottom: 0; height: 290px; display: grid; grid-template-columns: 1.3fr 1fr 1fr; }
+.swiss .chapter { padding: 26px 30px; display: flex; flex-direction: column; justify-content: space-between; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.swiss .chapter:hover { transform: translateY(-12px); }
+.swiss .chapter small { font-size: 15px; font-weight: 600; }
+.swiss .chapter b { font-stretch: 125%; font-weight: 800; font-size: 104px; line-height: .85; letter-spacing: -0.05em; }
+.swiss .keys { position: absolute; left: 40px; right: 40px; top: 392px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; }
+.swiss .keys i { height: 22px; border-radius: 3px; animation: pulse-key 2.4s ease-in-out infinite; }
+@keyframes pulse-key { 50% { transform: scaleY(.45); } }
+
+/* E. Instrument */
+.instrument { background: #D7D8DA; color: #1B1B1B; font-family: "Chivo", sans-serif; }
+.instrument .top { position: absolute; left: 36px; right: 36px; top: 26px; display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr; gap: 20px; font-size: 12.5px; line-height: 1.35; color: #3E3F42; }
+.instrument .top b { display: block; color: #111; font-weight: 600; font-size: 13.5px; }
+.instrument .top .brand { display: flex; gap: 8px; align-items: flex-start; font-weight: 800; font-size: 17px; color: #111; }
+.instrument .top .brand svg { width: 22px; height: 22px; }
+.instrument .device { position: absolute; left: 230px; top: 150px; width: 740px; height: 420px; border-radius: 34px; background: #EEEEEB; box-shadow: inset 0 2px 0 #fff, inset 0 -3px 0 #C7C8C5, 0 50px 80px -40px rgba(0,0,0,.45), 0 12px 24px -12px rgba(0,0,0,.2); transform: perspective(1600px) rotateX(16deg) rotateZ(-4deg); }
+.instrument .screen { position: absolute; left: 36px; top: 40px; width: 330px; height: 210px; border-radius: 14px; background: #0B0C0D; box-shadow: inset 0 0 0 6px #1B1C1E; overflow: hidden; color: #F2F2F2; font-family: "Chivo Mono", monospace; }
+.instrument .screen svg { position: absolute; left: 18px; top: 26px; width: 150px; height: 150px; color: #F5F5F2; }
+.instrument .screen .read { position: absolute; right: 20px; top: 30px; display: grid; gap: 10px; text-align: right; font-size: 13px; color: #9EA0A4; }
+.instrument .screen .read b { display: block; font-size: 30px; color: #fff; font-weight: 500; letter-spacing: -0.02em; }
+.instrument .knobs { position: absolute; right: 40px; top: 44px; display: grid; grid-template-columns: repeat(3, 84px); gap: 22px 26px; }
+.instrument .knob { width: 84px; height: 84px; border-radius: 50%; background: #E2E2DF; box-shadow: inset 0 2px 0 #fff, 0 6px 10px -4px rgba(0,0,0,.3), 0 0 0 1px #CFCFCB; position: relative; }
+.instrument .knob::after { content: ""; position: absolute; left: 50%; top: 9px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: #1B1B1B; }
+.instrument .knob.turn { animation: turn 7s ease-in-out infinite alternate; }
+@keyframes turn { from { transform: rotate(-70deg); } to { transform: rotate(80deg); } }
+.instrument .knob-label { position: absolute; font-size: 11.5px; color: #77787A; }
+.instrument .pads { position: absolute; left: 36px; right: 36px; bottom: 36px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 9px; }
+.instrument .pad { height: 74px; border-radius: 12px; border: 0; cursor: pointer; display: grid; place-items: end start; padding: 8px 9px; font: 600 12px "Chivo Mono", monospace; color: rgba(0,0,0,.6); box-shadow: inset 0 2px 0 rgba(255,255,255,.55), 0 4px 0 rgba(0,0,0,.12); transition: transform .12s, box-shadow .12s; }
+.instrument .pad:active, .instrument .pad.hit { transform: translateY(3px); box-shadow: inset 0 2px 0 rgba(255,255,255,.4), 0 1px 0 rgba(0,0,0,.12); }
+.instrument .caption { position: absolute; left: 36px; bottom: 30px; width: 420px; font-size: 15px; line-height: 1.45; color: #2E2F31; }
+.instrument .caption h4 { margin: 0 0 6px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; color: #111; }
+.instrument .buy { position: absolute; right: 36px; bottom: 34px; background: #1B1B1B; color: #fff; padding: 12px 18px; border-radius: 4px; font-weight: 600; font-size: 14px; }
+
+/* F. Crate */
+.crate { background: #1E3A2C; color: #F1EEE6; font-family: "Bricolage Grotesque", sans-serif; }
+.crate .nav { position: absolute; left: 44px; right: 44px; top: 28px; display: flex; align-items: center; gap: 30px; font-size: 15px; font-weight: 500; }
+.crate .brand { display: flex; gap: 9px; align-items: center; font-weight: 800; font-size: 19px; }
+.crate .brand svg { width: 24px; height: 24px; }
+.crate .nav .links { margin-left: auto; display: flex; gap: 26px; opacity: .8; }
+.crate h3 { position: absolute; left: 44px; top: 130px; margin: 0; font-size: 128px; line-height: .86; letter-spacing: -0.05em; font-weight: 800; width: 520px; }
+.crate .sub { position: absolute; left: 44px; top: 410px; width: 380px; margin: 0; font-size: 18px; line-height: 1.45; opacity: .85; font-family: "Inter", sans-serif; }
+.crate .btn { position: absolute; left: 44px; top: 516px; background: #F1EEE6; color: #1E3A2C; border-radius: 999px; padding: 13px 22px; font-weight: 700; font-size: 16px; }
+.crate .stage { position: absolute; left: 560px; top: 120px; width: 600px; height: 600px; perspective: 1500px; }
+.crate .box { position: absolute; left: 30px; right: 30px; bottom: 30px; height: 220px; background: #8A5A34; border-radius: 6px; transform: rotateX(8deg); z-index: 40; box-shadow: inset 0 -10px 0 rgba(0,0,0,.18); display: grid; place-items: center; }
+.crate .box span { font-weight: 800; font-size: 20px; letter-spacing: .2em; color: rgba(255,255,255,.55); }
+.crate .sleeve { position: absolute; left: 90px; width: 400px; height: 400px; bottom: 130px; border-radius: 4px; transform-origin: bottom center; transition: transform .7s cubic-bezier(.2,.7,.2,1); padding: 26px; display: flex; flex-direction: column; justify-content: flex-start; gap: 16px; color: #151515; cursor: pointer; box-shadow: 0 -2px 0 rgba(0,0,0,.1); }
+.crate .sleeve .k { font-size: 120px; font-weight: 800; line-height: .8; letter-spacing: -0.05em; }
+.crate .sleeve .t { font-family: "Inter", sans-serif; font-size: 15px; line-height: 1.35; }
+.crate .sleeve .t b { display: block; font-size: 22px; font-family: "Bricolage Grotesque", sans-serif; letter-spacing: -0.02em; }
+.crate .vinyl { position: absolute; width: 360px; height: 360px; left: 110px; bottom: 150px; transition: transform 1s cubic-bezier(.2,.7,.2,1); z-index: 1; }
+.crate .vinyl svg { width: 100%; height: 100%; animation: spin 1.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 860px) {
+  .intro, .head { grid-template-columns: minmax(0, 1fr); }
+  .refs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .frame { border-radius: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .daybreak .cloud, .after .scan, .swiss .keys i, .instrument .knob.turn, .crate .vinyl svg { animation: none; }
+  .canvas .in { transition: none; }
+}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <div>
+      <h1>Six directions for the Euphoria website</h1>
+      <div class="jump">
+        <a href="#signal">A · Signal</a><a href="#daybreak">B · Daybreak</a><a href="#after">C · Afterhours</a><a href="#swiss">D · Liner Notes</a><a href="#instrument">E · Instrument</a><a href="#crate">F · Crate</a>
+      </div>
+    </div>
+    <p>Each direction comes from real sites that won Awwwards Site of the Day, featured on One Page Love, or set the bar for SaaS and Mac app pages. Every sketch below is live: it opens with the app's logo animation, exactly as timed in the app. Press Replay to watch it again. Pick one, or mix parts, and I'll build the full page.</p>
+  </header>
+
+  <section class="direction" id="signal">
+    <div class="head">
+      <div>
+        <div class="letter">A</div>
+        <h2>Signal</h2>
+        <p class="pitch">A quiet, bright page where the logo curve is the whole show. The 3:2 curve draws first, then the curves for every key you can mix into bloom beside it in their Camelot colours. Calm, rich and unmistakably ours.</p>
+      </div>
+      <div class="specs">
+        <div class="spec"><b>Inspired by</b><span>Cursor Compile (name drawn as looping one-line curves), Craft, Linear's restraint</span></div>
+        <div class="spec"><b>Type</b><span>Instrument Sans, slightly condensed, semibold</span></div>
+        <div class="spec"><b>Palette</b><span class="swatches"><i style="background:#F6F5F1"></i><i style="background:#161616"></i><i style="background:oklch(0.62 0.13 240)"></i><i style="background:oklch(0.62 0.13 270)"></i><i style="background:oklch(0.62 0.13 30)"></i><i style="background:oklch(0.62 0.13 150)"></i></span></div>
+        <div class="spec"><b>Motion</b><span>Curves draw one after another with the app's draw, hold and erase timing</span></div>
+      </div>
+    </div>
+    <div class="refs">
+      <a class="ref" href="https://craft.do"><img src="__EMBED:refs/craft-do.webp__" alt="Craft's landing page: serif headline over a soft illustrated sky with the app below."><span><b>Craft</b> · calm type over soft colour</span></a>
+      <a class="ref" href="https://linear.app"><img src="__EMBED:refs/linear-app.webp__" alt="Linear's landing page: large crisp headline and the product interface."><span><b>Linear</b> · precision and restraint</span></a>
+      <a class="ref" href="https://www.highlight.xyz"><img src="__EMBED:refs/highlight-xyz.webp__" alt="Highlight's landing page on light grey with a tidy grid of options."><span><b>Highlight</b> · quiet light grey</span></a>
+    </div>
+    <p class="also">Also study <a href="https://cursor.com/compile">Cursor Compile</a>, scored 8.3 in the One Page Love study for its curve-drawn name.</p>
+    <div class="frame"><div class="canvas signal" data-sketch="signal">
+      <div class="nav in"><span class="brand"><svg viewBox="0 0 64 64"><path class="mark-path full" stroke-width="4"></path></svg>Euphoria</span><span class="links"><span>Features</span><span>Mixing in key</span><span>Install</span><span>GitHub</span></span><span class="btn">Download</span></div>
+      <h3 class="in d1">Every track, in key.</h3>
+      <p class="sub in d2">Euphoria finds the key, tempo and energy of every track in your collection. Free, open source, and nothing leaves your computer.</p>
+      <div class="ctas in d3"><span class="btn">Download for macOS</span><span class="btn ghost">Install on Linux</span></div>
+      <svg class="big" viewBox="0 0 64 64"><path class="mark-path" data-curve="3:2" data-intro stroke-width="1.6"></path></svg>
+      <div class="row in d4" id="signal-row"></div>
+    </div><button class="replay" type="button">Replay</button></div>
+  </section>
+
+  <section class="direction" id="daybreak">
+    <div class="head">
+      <div>
+        <div class="letter">B</div>
+        <h2>Daybreak</h2>
+        <p class="pitch">The feeling of walking out of the club at sunrise. A soft dawn sky with drifting clouds, an elegant serif headline, and the app floating up out of the horizon. The prettiest and most emotional of the six.</p>
+      </div>
+      <div class="specs">
+        <div class="spec"><b>Inspired by</b><span>Craft (sky and clouds), Arc and Dia (warmth), Cluely (serif over blue), Seasats (dusk light, 8.4)</span></div>
+        <div class="spec"><b>Type</b><span>Instrument Serif with italics, Inter for text</span></div>
+        <div class="spec"><b>Palette</b><span class="swatches"><i style="background:#8DB3E2"></i><i style="background:#B9D1EE"></i><i style="background:#F6D5C2"></i><i style="background:#FBD9C4"></i><i style="background:#13233D"></i></span></div>
+        <div class="spec"><b>Motion</b><span>Logo draws in the sky, headline rises, app window floats up, clouds drift</span></div>
+      </div>
+    </div>
+    <div class="refs">
+      <a class="ref" href="https://craft.do"><img src="__EMBED:refs/craft-do.webp__" alt="Craft's landing page with a painted sky."><span><b>Craft</b> · painted sky, app below</span></a>
+      <a class="ref" href="https://arc.net"><img src="__EMBED:refs/arc-net.webp__" alt="Arc and Dia's landing page with a soft glowing top and serif headline."><span><b>Arc / Dia</b> · soft glow, serif</span></a>
+      <a class="ref" href="https://cluely.com"><img src="__EMBED:refs/cluely-com.webp__" alt="Cluely's landing page with a serif headline on blue and the app below."><span><b>Cluely</b> · serif on a blue sky</span></a>
+    </div>
+    <p class="also">Also study <a href="https://www.seasats.com/">Seasats</a> (8.4) for dusk-lit calm.</p>
+    <div class="frame"><div class="canvas daybreak" data-sketch="daybreak">
+      <div class="sky"></div><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+      <div class="nav in"><span class="brand"><svg viewBox="0 0 64 64"><path class="mark-path full" stroke-width="4"></path></svg>Euphoria</span><span class="pillnav"><span>Features</span><span>Mixing in key</span><span>Install</span></span><span class="btn">Download</span></div>
+      <svg class="logo-hero" viewBox="0 0 64 64"><path class="mark-path" data-curve="3:2" data-intro stroke-width="3"></path></svg>
+      <h3 class="in d1">The key of every track<br>you <em>love</em>, found.</h3>
+      <p class="sub in d2">Key, tempo and energy for your whole collection. Free, open source and fully offline.</p>
+      <div class="cta in d3"><span class="btn"> Download for macOS</span><span class="btn light">Install on Linux</span></div>
+      <div class="window in zoom d4"><img data-shot="main" alt="The Euphoria app in its dark theme." width="1600" height="968"></div>
+    </div><button class="replay" type="button">Replay</button></div>
+  </section>
+
+  <section class="direction" id="after">
+    <div class="head">
+      <div>
+        <div class="letter">C</div>
+        <h2>Afterhours</h2>
+        <p class="pitch">Dark, precise and cinematic, like the best SaaS launches. A cold blue light falls on the app, which tilts back like a mixer on a booth. A light scans across it, as if the tracks were being analysed.</p>
+      </div>
+      <div class="specs">
+        <div class="spec"><b>Inspired by</b><span>Linear, Diffusion Studio, Framer</span></div>
+        <div class="spec"><b>Type</b><span>Inter Tight semibold, tight tracking, a grey second line</span></div>
+        <div class="spec"><b>Palette</b><span class="swatches"><i style="background:#07080A"></i><i style="background:#1A1C21"></i><i style="background:#ECEDEF"></i><i style="background:#5B9BFF"></i></span></div>
+        <div class="spec"><b>Motion</b><span>Logo glows in an "Analysing" chip, scan light sweeps the app, sections slide in</span></div>
+      </div>
+    </div>
+    <div class="refs">
+      <a class="ref" href="https://linear.app"><img src="__EMBED:refs/linear-app.webp__" alt="Linear's dark landing page."><span><b>Linear</b> · dark precision</span></a>
+      <a class="ref" href="https://diffusion.studio/"><img src="__EMBED:refs/diffusion-studio.webp__" alt="Diffusion Studio's dark landing page with a video editor below the headline."><span><b>Diffusion Studio</b> · creative tool, dark</span></a>
+      <a class="ref" href="https://framer.com"><img src="__EMBED:refs/framer-com.webp__" alt="Framer's dark landing page with a wall of site previews."><span><b>Framer</b> · confident, glowing</span></a>
+    </div>
+    <div class="frame"><div class="canvas after" data-sketch="after">
+      <div class="beam"></div>
+      <div class="nav in"><span class="brand"><svg viewBox="0 0 64 64"><path class="mark-path full" stroke-width="4"></path></svg>Euphoria</span><span>Features</span><span>Exports</span><span>Changelog</span><span class="right"><span class="chipbtn">GitHub</span><span class="chipbtn on">Download</span></span></div>
+      <div class="status in"><svg viewBox="0 0 64 64"><path class="mark-path" data-curve="3:2" data-loop stroke-width="5"></path></svg>Analysing 48 tracks, nothing uploaded</div>
+      <h3 class="in d1">Mix in key, all night.<br><span>Every track, measured.</span></h3>
+      <p class="sub in d2">Key, tempo and energy for your whole collection, written straight into rekordbox, Traktor and Serato.</p>
+      <div class="cta in d2"><span class="chipbtn">Install on Linux</span><span class="chipbtn on">Download for macOS</span></div>
+      <div class="shot in zoom d3"><div class="tilt"><img data-shot="main" alt="The Euphoria app tilted back in perspective." width="1600" height="968"><div class="scan"></div></div></div>
+    </div><button class="replay" type="button">Replay</button></div>
+  </section>
+
+  <section class="direction" id="swiss">
+    <div class="head">
+      <div>
+        <div class="letter">D</div>
+        <h2>Liner Notes, Swiss</h2>
+        <p class="pitch">The direction you liked, pushed much further. A techno record sleeve: the name set huge in a wide grotesk, the logo drawing in place of the O, and each chapter as a whole field of a Camelot key colour.</p>
+      </div>
+      <div class="specs">
+        <div class="spec"><b>Inspired by</b><span>Paul Kalkbrenner (Awwwards, 8.1), Detroit Paris, University of the Arts London</span></div>
+        <div class="spec"><b>Type</b><span>Archivo Expanded 800 for titles, Archivo for text</span></div>
+        <div class="spec"><b>Palette</b><span class="swatches"><i style="background:#fff"></i><i style="background:#111"></i><i style="background:oklch(0.8 0.1 330)"></i><i style="background:oklch(0.82 0.1 240)"></i><i style="background:oklch(0.86 0.1 120)"></i></span></div>
+        <div class="spec"><b>Motion</b><span>Logo draws inside the name, key bars pulse to tempo, colour chapters lift on hover</span></div>
+      </div>
+    </div>
+    <div class="refs">
+      <a class="ref" href="https://detroit.paris/"><img src="__EMBED:refs/detroit-paris.webp__" alt="Detroit's page: huge condensed black headline on white."><span><b>Detroit</b> · huge type on white</span></a>
+      <a class="ref" href="https://arts.ac.uk"><img src="__EMBED:refs/arts-ac-uk.webp__" alt="University of the Arts London: bold headline and a vivid colour photo."><span><b>UAL</b> · bold Swiss with colour</span></a>
+      <a class="ref" href="https://thrilljockey.com"><img src="__EMBED:refs/thrilljockey-com.webp__" alt="Thrill Jockey: a grid of record sleeves."><span><b>Thrill Jockey</b> · record sleeves</span></a>
+    </div>
+    <p class="also">Also study <a href="https://www.paulkalkbrenner.net/">Paul Kalkbrenner</a> (8.1), whose Swiss poster type and flat colour chapters inspired this direction.</p>
+    <div class="frame"><div class="canvas swiss" data-sketch="swiss">
+      <div class="nav in"><span>Euphoria</span><span>Key, tempo, energy</span><span>macOS and Linux</span><span>Download</span></div>
+      <div class="name in d1"><span>EUPH</span><svg viewBox="0 0 64 64"><path class="mark-path" data-curve="3:2" data-intro stroke-width="7"></path></svg><span>RIA</span></div>
+      <div class="meta in d2"><span><b>Every track, in key.</b></span><span>Finds the key, tempo and energy of your whole collection.</span><span>Free, open source, and nothing leaves your computer.</span><span class="btn">Download</span></div>
+      <div class="keys in d3" id="swiss-keys"></div>
+      <div class="chapters in d4">
+        <div class="chapter" style="background:oklch(0.8 0.1 330)"><small>Key</small><b>11A</b></div>
+        <div class="chapter" style="background:oklch(0.82 0.1 240)"><small>Tempo</small><b>117.9</b></div>
+        <div class="chapter" style="background:oklch(0.86 0.1 120)"><small>Energy</small><b>4/10</b></div>
+      </div>
+    </div><button class="replay" type="button">Replay</button></div>
+  </section>
+
+  <section class="direction" id="instrument">
+    <div class="head">
+      <div>
+        <div class="letter">E</div>
+        <h2>Instrument</h2>
+        <p class="pitch">Euphoria drawn as a piece of studio hardware, the way Teenage Engineering presents its products. The logo traces on a small screen, and twelve key pads are coloured like the Camelot wheel. Press a pad and the screen shows that key.</p>
+      </div>
+      <div class="specs">
+        <div class="spec"><b>Inspired by</b><span>Teenage Engineering, Fellow, CleanShot X and Screen Movie (Mac app pages)</span></div>
+        <div class="spec"><b>Type</b><span>Chivo for labels and text, Chivo Mono on the screen</span></div>
+        <div class="spec"><b>Palette</b><span class="swatches"><i style="background:#D7D8DA"></i><i style="background:#EEEEEB"></i><i style="background:#0B0C0D"></i><i style="background:oklch(0.82 0.11 30)"></i><i style="background:oklch(0.82 0.11 150)"></i><i style="background:oklch(0.82 0.11 270)"></i></span></div>
+        <div class="spec"><b>Motion</b><span>Logo traces on the screen, knobs turn, pads press. Clickable here.</span></div>
+      </div>
+    </div>
+    <div class="refs">
+      <a class="ref" href="https://teenageengineering.com"><img src="__EMBED:refs/teenageengineering-com.webp__" alt="Teenage Engineering: a product device shown large on grey with tiny type above."><span><b>Teenage Engineering</b> · product as object</span></a>
+      <a class="ref" href="https://fellowproducts.com"><img src="__EMBED:refs/fellowproducts-com.webp__" alt="Fellow: a kettle photographed large on a calm background."><span><b>Fellow</b> · calm studio object</span></a>
+      <a class="ref" href="https://www.highlight.xyz"><img src="__EMBED:refs/highlight-xyz.webp__" alt="Highlight on light grey."><span><b>Highlight</b> · cool grey system</span></a>
+    </div>
+    <div class="frame"><div class="canvas instrument" data-sketch="instrument">
+      <div class="top in">
+        <span class="brand"><svg viewBox="0 0 64 64"><path class="mark-path full" stroke-width="4.4"></path></svg>Euphoria</span>
+        <span><b>Key</b>Camelot and musical notation</span>
+        <span><b>Tempo</b>From the beat grid</span>
+        <span><b>Energy</b>1 to 10, documented</span>
+        <span><b>Offline</b>Nothing leaves your computer</span>
+      </div>
+      <div class="device in zoom d1">
+        <div class="screen">
+          <svg viewBox="0 0 64 64"><path class="mark-path" id="inst-curve" data-curve="3:2" data-loop stroke-width="2.2"></path></svg>
+          <div class="read"><span><b id="inst-key">11A</b>F# minor</span><span><b>117.9</b>BPM</span></div>
+        </div>
+        <div class="knobs"><span class="knob turn"></span><span class="knob" style="transform:rotate(40deg)"></span><span class="knob turn" style="animation-duration:9s"></span><span class="knob" style="transform:rotate(-30deg)"></span><span class="knob turn" style="animation-duration:5s"></span><span class="knob" style="transform:rotate(100deg)"></span></div>
+        <div class="pads" id="inst-pads"></div>
+      </div>
+      <div class="caption in d2"><h4>A key analyser for your whole crate.</h4>Free and open source, for macOS and Linux.</div>
+      <span class="buy in d3">Download</span>
+    </div><button class="replay" type="button">Replay</button></div>
+  </section>
+
+  <section class="direction" id="crate">
+    <div class="head">
+      <div>
+        <div class="letter">F</div>
+        <h2>Crate</h2>
+        <p class="pitch">Digging through a crate of records. Sleeves coloured by key flip forward one by one, each showing its analysis, while the vinyl slides out with the logo drawing on its label at 33⅓ rpm. Warm, physical and playful.</p>
+      </div>
+      <div class="specs">
+        <div class="spec"><b>Inspired by</b><span>Third Man Records, Mosby's Files (Awwwards, 8.0, flip-through folders), Potion</span></div>
+        <div class="spec"><b>Type</b><span>Bricolage Grotesque 800, Inter for text</span></div>
+        <div class="spec"><b>Palette</b><span class="swatches"><i style="background:#1E3A2C"></i><i style="background:#F1EEE6"></i><i style="background:#8A5A34"></i><i style="background:oklch(0.8 0.1 330)"></i><i style="background:oklch(0.82 0.1 240)"></i><i style="background:oklch(0.84 0.1 90)"></i></span></div>
+        <div class="spec"><b>Motion</b><span>Sleeves flip through on their own, vinyl spins at 33⅓, click a sleeve to pull it</span></div>
+      </div>
+    </div>
+    <div class="refs">
+      <a class="ref" href="https://thirdmanrecords.com"><img src="__EMBED:refs/thirdmanrecords-com.webp__" alt="Third Man Records: record sleeves and coloured vinyl arranged as the hero."><span><b>Third Man Records</b> · sleeves and vinyl</span></a>
+      <a class="ref" href="https://daptonerecords.com"><img src="__EMBED:refs/daptonerecords-com.webp__" alt="Daptone Records: a large illustrated record cover."><span><b>Daptone</b> · the cover as hero</span></a>
+      <a class="ref" href="https://mixpotion.co"><img src="__EMBED:refs/mixpotion-co.webp__" alt="Potion: bold serif headline with colourful product packs."><span><b>Potion</b> · bold, colourful objects</span></a>
+    </div>
+    <p class="also">Also study <a href="https://www.mosbyfiles.com/">Mosby's Files</a> (8.0) for flipping through a stack.</p>
+    <div class="frame"><div class="canvas crate" data-sketch="crate">
+      <div class="nav in"><span class="brand"><svg viewBox="0 0 64 64"><path class="mark-path full" stroke-width="4.4"></path></svg>Euphoria</span><span class="links"><span>Features</span><span>Exports</span><span>Install</span></span></div>
+      <h3 class="in d1">Dig in key.</h3>
+      <p class="sub in d2">Euphoria reads every record in your collection and tells you its key, tempo and energy. Free, offline, open source.</p>
+      <span class="btn in d3">Download for macOS</span>
+      <div class="stage in zoom d2" id="crate-stage">
+        <div class="vinyl" id="crate-vinyl"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="99" fill="#0E0E0E"></circle><g fill="none" stroke="rgba(255,255,255,.07)"><circle cx="100" cy="100" r="92"></circle><circle cx="100" cy="100" r="84"></circle><circle cx="100" cy="100" r="76"></circle><circle cx="100" cy="100" r="68"></circle><circle cx="100" cy="100" r="60"></circle><circle cx="100" cy="100" r="52"></circle></g><circle cx="100" cy="100" r="36" fill="#F1EEE6"></circle><svg x="74" y="74" width="52" height="52" viewBox="0 0 64 64"><path class="mark-path" data-curve="3:2" data-loop stroke-width="3" style="color:#1E3A2C"></path></svg><circle cx="100" cy="100" r="2.5" fill="#1E3A2C"></circle></svg></div>
+        <div class="box"><span>DJ TRACKS · 14</span></div>
+      </div>
+    </div><button class="replay" type="button">Replay</button></div>
+  </section>
+
+  <section class="pick">
+    <h2 style="font-size:32px;letter-spacing:-0.03em;margin:0 0 10px">How to pick</h2>
+    <p>Tell me a letter, or combine them: for example the Daybreak sky with the Signal curves, or the Liner Notes type with the Crate hero. The chosen direction becomes a full landing page with installation, every feature, the screenshots and the FAQ, built in the same style as its sketch here.</p>
+  </section>
+</div>
+
+<script>
+(function () {
+  const SHOTS = { main: "__EMBED:screenshots/main-window.png__", paper: "__EMBED:screenshots/main-window-paper.png__" };
+  document.querySelectorAll("img[data-shot]").forEach((image) => { image.src = SHOTS[image.dataset.shot]; });
+
+  const DRAW = 1.6, HOLD = 0.5, ERASE = 1.2, LOOP = DRAW + HOLD + ERASE, PULSE = 2.4, DEPTH = 0.55;
+  const reduces = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ease = (progress) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(Math.max(progress, 0), 1));
+  const point = (larger, smaller, turn) => [32 + 24 * Math.sin(larger * 2 * Math.PI * turn), 32 + 24 * Math.cos(smaller * 2 * Math.PI * turn)];
+
+  const spanCache = {};
+  function spanFor(larger, smaller) {
+    const key = larger + ":" + smaller;
+    if (spanCache[key]) return spanCache[key];
+    let retraces = true;
+    for (let step = 0; step <= 200 && retraces; step++) {
+      const turn = 0.25 + 0.5 * step / 200;
+      const [ax, ay] = point(larger, smaller, turn);
+      const [bx, by] = point(larger, smaller, 1.5 - turn);
+      if (Math.abs(ax - bx) > 1e-3 || Math.abs(ay - by) > 1e-3) retraces = false;
+    }
+    spanCache[key] = retraces ? [0.25, 0.75] : [0.25, 1.25];
+    return spanCache[key];
+  }
+
+  function curvePath(larger, smaller, from, to) {
+    if (to - from <= 0) return "";
+    const [start, end] = spanFor(larger, smaller);
+    const density = Math.max(300, (larger + smaller) * 70) * (end - start) / 0.5;
+    const count = Math.max(2, Math.ceil((to - from) / (end - start) * density));
+    let path = "";
+    for (let index = 0; index < count; index++) {
+      const [across, down] = point(larger, smaller, from + (to - from) * index / (count - 1));
+      path += (index ? "L" : "M") + across.toFixed(2) + " " + down.toFixed(2);
+    }
+    return path;
+  }
+
+  function span(seconds, start, end, loops) {
+    const length = end - start;
+    const local = loops ? ((seconds % LOOP) + LOOP) % LOOP : Math.min(seconds, DRAW + HOLD);
+    if (local < DRAW) return [start, start + length * ease(local / DRAW)];
+    if (local < DRAW + HOLD || !loops) return [start, end];
+    return [start + length * ease((local - DRAW - HOLD) / ERASE), end];
+  }
+
+  const ratioOf = (path) => (path.dataset.curve || "3:2").split(":").map(Number);
+  document.querySelectorAll("path.full").forEach((path) => {
+    const [start, end] = spanFor(3, 2);
+    path.setAttribute("d", curvePath(3, 2, start, end));
+  });
+
+  const hues = (number) => (number * 30) % 360;
+  const MINOR = ["Ab", "Eb", "Bb", "F", "C", "G", "D", "A", "E", "B", "F#", "Db"];
+
+  const signalRow = document.getElementById("signal-row");
+  const intervals = [
+    { ratio: "1:1", name: "Same key", from: "8A → 8A", hue: 240 },
+    { ratio: "3:2", name: "Perfect fifth", from: "8A → 9A", hue: 270 },
+    { ratio: "4:3", name: "Perfect fourth", from: "8A → 7A", hue: 210 },
+    { ratio: "6:5", name: "Relative major", from: "8A → 8B", hue: 240 },
+    { ratio: "9:8", name: "Energy boost", from: "8A → 10A", hue: 300 },
+    { ratio: "45:32", name: "Clash", from: "8A → 2A", hue: 60 },
+  ];
+  signalRow.innerHTML = intervals.map((interval, index) => `<div class="cell"><svg viewBox="0 0 64 64"><path class="mark-path" data-curve="${interval.ratio}" data-loop data-offset="${index * 0.45}" stroke-width="${interval.ratio === "45:32" ? 0.8 : 2.4}" style="color:oklch(0.6 0.14 ${interval.hue})"></path></svg><b>${interval.name}</b><span>${interval.from} · ${interval.ratio.replace(":", " : ")}</span></div>`).join("");
+
+  const swissKeys = document.getElementById("swiss-keys");
+  swissKeys.innerHTML = Array.from({ length: 12 }, (_, index) => `<i style="background:oklch(0.78 0.12 ${hues(index + 1)});animation-delay:${(index * 0.508).toFixed(2)}s;animation-duration:${(60 / 117.9 * 4).toFixed(3)}s"></i>`).join("");
+
+  const pads = document.getElementById("inst-pads");
+  pads.innerHTML = MINOR.map((name, index) => `<button class="pad" type="button" data-key="${index + 1}A" data-name="${name} minor" style="background:oklch(0.82 0.11 ${hues(index + 1)})">${index + 1}A</button>`).join("");
+  const instKey = document.getElementById("inst-key");
+  pads.addEventListener("click", (event) => {
+    const pad = event.target.closest(".pad");
+    if (!pad) return;
+    instKey.textContent = pad.dataset.key;
+    instKey.nextSibling.textContent = pad.dataset.name;
+    restart(document.getElementById("inst-curve"));
+  });
+
+  const crateStage = document.getElementById("crate-stage");
+  const crateTracks = [
+    ["11A", 330, "Kwa Mama", "Atmos Blaq · 117.9 BPM · energy 4"],
+    ["8A", 240, "Patchido", "Enoo Napa remix · 119.9 BPM · energy 3"],
+    ["9A", 270, "Crazy", "BADBOX · 116.0 BPM · energy 5"],
+    ["5A", 150, "Bangathini", "NAAK · 119.9 BPM · energy 5"],
+    ["4A", 120, "Je parle français", "French 79 · 115.1 BPM · energy 4"],
+    ["1A", 30, "For Jules", "Lövestad · 124.8 BPM · energy 4"],
+  ];
+  crateTracks.forEach(([code, hue, title, detail], index) => {
+    const sleeve = document.createElement("div");
+    sleeve.className = "sleeve";
+    sleeve.style.background = `oklch(0.82 0.1 ${hue})`;
+    sleeve.innerHTML = `<span class="k">${code}</span><span class="t"><b>${title}</b>${detail}</span>`;
+    crateStage.insertBefore(sleeve, crateStage.querySelector(".box"));
+  });
+  const sleeves = Array.from(crateStage.querySelectorAll(".sleeve"));
+  let front = 0;
+  function layoutCrate() {
+    sleeves.forEach((sleeve, index) => {
+      const depth = (index - front + sleeves.length) % sleeves.length;
+      sleeve.style.zIndex = String(30 - depth);
+      sleeve.style.transform = depth === 0
+        ? "translateY(-40px) rotateX(-4deg)"
+        : `translateZ(${-depth * 26}px) translateY(${depth * -6}px) rotateX(${12 + depth * 2}deg)`;
+      sleeve.style.filter = depth === 0 ? "none" : `brightness(${1 - depth * 0.07})`;
+    });
+    document.getElementById("crate-vinyl").style.transform = "translate(170px, -110px)";
+    document.getElementById("crate-vinyl").style.zIndex = "29";
+  }
+  layoutCrate();
+  crateStage.addEventListener("click", () => { front = (front + 1) % sleeves.length; layoutCrate(); });
+  if (!reduces) setInterval(() => { front = (front + 1) % sleeves.length; layoutCrate(); }, 3200);
+
+  const tracked = Array.from(document.querySelectorAll("path[data-curve]:not(.full)"));
+  const started = new Map();
+  function restart(path) { started.set(path, performance.now()); }
+  tracked.forEach((path) => restart(path));
+
+  const canvases = Array.from(document.querySelectorAll(".canvas"));
+  function intro(canvas) {
+    canvas.classList.add("pre");
+    canvas.querySelectorAll("path[data-curve]:not(.full)").forEach(restart);
+    clearTimeout(canvas._timer);
+    canvas._timer = setTimeout(() => canvas.classList.remove("pre"), reduces ? 200 : (DRAW + HOLD) * 1000 - 300);
+  }
+  if ("IntersectionObserver" in window) {
+    const seen = new WeakSet();
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting && !seen.has(entry.target)) { seen.add(entry.target); intro(entry.target); }
+    }), { threshold: 0 });
+    canvases.forEach((canvas) => observer.observe(canvas));
+  }
+  document.querySelectorAll(".replay").forEach((button) => button.addEventListener("click", () => intro(button.previousElementSibling)));
+
+  function frame(now) {
+    tracked.forEach((path) => {
+      const [larger, smaller] = ratioOf(path);
+      const [start, end] = spanFor(larger, smaller);
+      const seconds = (now - started.get(path)) / 1000 - Number(path.dataset.offset || 0);
+      if (reduces) {
+        path.setAttribute("d", curvePath(larger, smaller, start, end));
+        path.style.strokeOpacity = String(1 - DEPTH * (0.5 - 0.5 * Math.cos(2 * Math.PI * Math.max(seconds, 0) / PULSE)));
+        return;
+      }
+      if (seconds < 0) { path.setAttribute("d", ""); return; }
+      const [from, to] = span(seconds, start, end, path.hasAttribute("data-loop"));
+      path.setAttribute("d", curvePath(larger, smaller, from, to));
+    });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  const fit = () => document.querySelectorAll(".frame").forEach((frameElement) => {
+    frameElement.querySelector(".canvas").style.setProperty("--scale", String(frameElement.clientWidth / 1200));
+  });
+  if ("ResizeObserver" in window) new ResizeObserver(fit).observe(document.body);
+  fit();
+})();
+</script>

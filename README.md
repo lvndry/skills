@@ -7,6 +7,7 @@ Landry's collection of agent skills. Works with Claude Code, Jazz, and any setup
 | Skill | What it does |
 | ----- | ------------ |
 | `assemble-a-team` | Compose a team of role-specialist subagents instead of reasoning as one generalist |
+| `design-inspiration-board` | Research award-level sites and turn them into a mood board of design directions with live hero sketches, before building anything |
 | `help-me-think` | Spin up a team of subagents that challenge your idea, find blind spots, and surface options |
 | `investigate-bug` | Investigate a reported bug like a detective before assuming it exists |
 | `keep-awake` | Keep the computer from sleeping while a long task runs (caffeinate / systemd-inhibit) |
